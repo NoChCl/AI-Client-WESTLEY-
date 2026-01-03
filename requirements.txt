@@ -1,0 +1,15 @@
+# Core packages
+numpy>=1.27
+scipy>=1.11
+requests>=2.32
+sounddevice>=0.4.9
+keyboard
+
+# Whisper for speech recognition (cross-platform)
+openai-whisper>=20230314
+
+# Piper for TTS (check your exact PyPI package name)
+piper-tts
+
+# Environment variable management
+python-dotenv>=1.1.1
