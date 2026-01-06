@@ -23,8 +23,8 @@ You must answer thoroughly and remain in character at all times."""
 
 
 while True:
-    userInput = getPrompt()
-    
+    #userInput = getPrompt()
+    userInput=input("Prompt: ")
     if userInput=="": continue
 
     if checkQuit(userInput): break

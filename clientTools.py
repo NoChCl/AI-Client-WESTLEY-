@@ -20,11 +20,9 @@ piper = subprocess.Popen(
     ["piper",
     "-m", model,
     "-c", config,
-    "--rate", "1.3",
     "--output-raw"],
     stdin=subprocess.PIPE, stdout=subprocess.PIPE
 )
-
 
 OLLAMA_URL = determineOllamaUrl()
 MODEL_NAME = "qwen2.5:14b"
@@ -68,8 +66,11 @@ def getResponse(prompt, personality, personalityName):
             if line:
                 chunk = line.decode('utf-8').removeprefix('data: ')
                 if chunk and chunk != "[DONE]":
+                    
                     #format right
                     content = normalize(chunk)  # treat raw text
+                    if not content or not content.strip():
+                        continue
                     
                     # Speak chunk immediately
                     piper.stdin.write((content + "\n").encode("utf8"))
