@@ -52,6 +52,7 @@ def getResponse(prompt, personality, personalityName):
             break'''
             
     response = sendPayload({
+            "interface": "CLI",
             "model": MODEL_NAME,
             "prompt": prompt,
             "personality": personality,
