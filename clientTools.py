@@ -4,8 +4,8 @@ import sounddevice as sd
 
 
 sd_stream = sd.RawOutputStream(
-    samplerate=16000, 
-    channels=1, 
+    samplerate=16000,
+    channels=1,
     dtype='int16'
 )
 sd_stream.start()
@@ -25,7 +25,7 @@ piper = subprocess.Popen(
 )
 
 OLLAMA_URL = determineOllamaUrl()
-MODEL_NAME = "qwen2.5:14b"
+MODEL_NAME = "qwen3:8b"
 
 
 
@@ -42,7 +42,7 @@ def getResponse(prompt, personality, personalityName):
             "personality": personality,
             "personalityName": personalityName
         }, True)
-    
+
         if response is None:
             if i == 9:
                 print("WESTLEY: Something went wrong, please try again.")
@@ -50,7 +50,7 @@ def getResponse(prompt, personality, personalityName):
             print("WESTLEY: Something went wrong, atempting again.")
         else:
             break'''
-            
+
     response = sendPayload({
             "interface": "CLI",
             "model": MODEL_NAME,
@@ -58,6 +58,11 @@ def getResponse(prompt, personality, personalityName):
             "personality": personality,
             "personalityName": personalityName
         }, True)
+
+    if response is None:
+        print("WESTLEY: Could not contact the server.")
+        return ""
+
 
     # get live output
     out = ""
@@ -67,22 +72,22 @@ def getResponse(prompt, personality, personalityName):
             if line:
                 chunk = line.decode('utf-8').removeprefix('data: ')
                 if chunk and chunk != "[DONE]":
-                    
+
                     #format right
                     content = normalize(chunk)  # treat raw text
                     if not content or not content.strip():
                         continue
-                    
+
                     # Speak chunk immediately
                     piper.stdin.write((content + "\n").encode("utf8"))
                     piper.stdin.flush()
-                    
+
                     #add text to end of console line
                     print(content, flush=True)
-                    
+
                     #add token to full response
                     out += content
-                    
+
         except Exception as e:
             print(f"\n[Stream Decode Error] {e}")
     print()
@@ -162,8 +167,8 @@ def playAudio():
         chunk = audioQueue.get()
         sd_stream.write(chunk)
 
-    
-    
+
+
 def checkQuit(userInput):
     quitWords=["exit", "quit", "close"]
     if userInput.strip().lower() in quitWords:

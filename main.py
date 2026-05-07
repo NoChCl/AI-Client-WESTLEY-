@@ -3,8 +3,8 @@ from rec import *
 import threading
 
     
-threading.Thread(target=readAudio).start()
-threading.Thread(target=playAudio).start()
+threading.Thread(target=readAudio, daemon=True).start()
+threading.Thread(target=playAudio, daemon=True).start()
 
 
 print("WESTLEY is loaded and ready.\n")
